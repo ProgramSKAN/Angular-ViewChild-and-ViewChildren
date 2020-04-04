@@ -1,3 +1,5 @@
+import { element } from 'protractor';
+import { DateComponent } from './date/date.component';
 import { ChildComponent } from './child/child.component';
 import { Component, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { NgModel } from '@angular/forms';
@@ -19,12 +21,15 @@ export class AppComponent {
   input7 = "emit valueChanges";
   input8 = "emit valueChanges";
 
+
   @ViewChild("inputElement", { static: true }) inputElement: ElementRef;
   @ViewChild(NgModel, { static: true }) input2Reference: NgModel;
   @ViewChildren(NgModel) multiInputsDomReference: QueryList<NgModel>;
   @ViewChildren(ChildComponent) childComponentReference: QueryList<NgModel>;
   @ViewChildren("inputRef") multiInputsRef: QueryList<NgModel>;
-  @ViewChild(ChildComponent) oneChildReference: NgModel;//gets first child from multiple childs
+  @ViewChild(ChildComponent) oneChildReference: any;//gets first child from multiple childs
+  // @ViewChild(DateComponent) dateChildRef: DateComponent;//for single date componenet
+  @ViewChildren(DateComponent) dateMultiChildRef: QueryList<DateComponent>;
 
   ngAfterViewInit() {
     console.log("inputElement", this.inputElement);
@@ -61,6 +66,19 @@ export class AppComponent {
     console.log(this.oneChildReference.username);//access property of child component
     this.oneChildReference.updateUserName();
 
+
+    //date
+    // console.log(this.dateChildRef.today);
+    // setInterval(() => {
+    //   this.dateChildRef.today = new Date()
+    // }, 1000)
+
+    console.log(this.dateMultiChildRef.toArray());
+    this.dateMultiChildRef.forEach(element => {
+      setInterval(() => {
+        element.today = new Date();
+      }, 1000)
+    });
 
   }
 
